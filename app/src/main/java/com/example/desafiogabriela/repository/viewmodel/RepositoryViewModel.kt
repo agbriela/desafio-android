@@ -7,11 +7,15 @@ import androidx.lifecycle.ViewModel
 import com.example.desafiogabriela.model.ItemRepository
 import com.example.desafiogabriela.model.Items
 import com.example.desafiogabriela.api.WebClient
+import com.example.desafiogabriela.utils.Logger
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RepositoryViewModel(private val get: WebClient) : ViewModel() {
+class RepositoryViewModel(
+    private val get: WebClient,
+    private val logger: Logger
+) : ViewModel() {
 
     var page = 1
     private val list = mutableListOf<ItemRepository>()
@@ -19,6 +23,7 @@ class RepositoryViewModel(private val get: WebClient) : ViewModel() {
     private val liveDataError = MutableLiveData<Any>()
     private val liveDataListSuccess: MutableLiveData<List<ItemRepository>> = MutableLiveData()
     val liveData: LiveData<List<ItemRepository>> = liveDataListSuccess
+    val liveDataNetworkError: LiveData<Any> = liveDataError
 
     fun getSearch() {
 
@@ -43,7 +48,7 @@ class RepositoryViewModel(private val get: WebClient) : ViewModel() {
                 call: Call<Items>,
                 t: Throwable
             ) {
-                Log.d("unexpected error", t.message.toString())
+                logger.logMessage("unexpected error", t.message.toString())
                 liveDataError.postValue(t)
             }
         })

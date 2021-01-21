@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.desafiogabriela.model.ItemPullrequest
 import com.example.desafiogabriela.R
+import com.example.desafiogabriela.utils.loadImageUrl
 
 import com.squareup.picasso.Picasso
 
@@ -31,9 +32,7 @@ class PullrequestAdapter(
 
         val item = list[position]
 
-        Picasso.get()
-            .load(item.owner.image)
-            .into(holder.icon)
+        holder.icon.loadImageUrl(item.owner.image)
         holder.title.text = item.name
         holder.description.text = item.description
         holder.username.text = item.owner.username
