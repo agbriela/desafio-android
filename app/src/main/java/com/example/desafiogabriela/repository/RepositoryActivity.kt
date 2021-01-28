@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -71,6 +72,10 @@ class RepositoryActivity : AppCompatActivity(), RepositoryAdapter.OnItemClickLis
             binding.progressBar.visibility = View.GONE
 
             isLoading = false
+        })
+
+        viewModel.liveDataEmptyList.observe(this, Observer {
+            // Mostrar mensagem de erro para usuário
         })
     }
 
