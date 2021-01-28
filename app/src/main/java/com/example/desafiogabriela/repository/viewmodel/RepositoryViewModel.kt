@@ -22,8 +22,10 @@ class RepositoryViewModel(
 
     private val liveDataError = MutableLiveData<Any>()
     private val liveDataListSuccess: MutableLiveData<List<ItemRepository>> = MutableLiveData()
+    private val liveDataEmptyListFromServer: MutableLiveData<Boolean> = MutableLiveData()
     val liveData: LiveData<List<ItemRepository>> = liveDataListSuccess
     val liveDataNetworkError: LiveData<Any> = liveDataError
+    val liveDataEmptyList: LiveData<Boolean> = liveDataEmptyListFromServer
 
     fun getSearch() {
 
@@ -34,9 +36,13 @@ class RepositoryViewModel(
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-
                         list.addAll(it.items)
                         liveDataListSuccess.value = list
+
+                        if(page == 1 && list.isEmpty()){
+                            liveDataEmptyListFromServer.value = true
+                        }
+
                         page++
                     }
                 } else {
