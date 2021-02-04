@@ -67,6 +67,6 @@ class RepositoryViewModelTest {
         viewModel.getSearch()
 
         //assert
-        assertEquals("Cleitinho", viewModel.liveDataNetworkError.value)
+        assertEquals(R.string.network_error, viewModel.liveDataNetworkError.value)
     }
 }
