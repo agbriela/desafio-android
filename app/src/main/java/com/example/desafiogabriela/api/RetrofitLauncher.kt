@@ -1,21 +1,25 @@
 package com.example.desafiogabriela.api
 
+import androidx.annotation.VisibleForTesting
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object InicializadorDeRetrofit {
+object RetrofitLauncher {
+
+    val interceptor = HttpLoggingInterceptor().apply {
+       setLevel(HttpLoggingInterceptor.Level.HEADERS)
+    }
+    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+    @VisibleForTesting
+    var baseurl = "https://api.github.com/"
 
     fun get(): WebClient {
 
-
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS)
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
         return Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl(baseurl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

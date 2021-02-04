@@ -8,39 +8,41 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.desafiogabriela.model.ItemRepository
 import com.example.desafiogabriela.R
+import com.example.desafiogabriela.utils.loadImageURL
 import com.squareup.picasso.Picasso
 
 class RepositoryAdapter(
 
     var list: List<ItemRepository>,
-    private val listener: RepositoryActivity): RecyclerView.Adapter<RepositoryAdapter.ViewHolderclass>() {
+    private val listener: RepositoryActivity
+) : RecyclerView.Adapter<RepositoryAdapter.ViewHolderClass>() {
 
-
-    override fun onBindViewHolder(holder: ViewHolderclass, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
         val item = list[position]
 
         Picasso.get()
             .load(item.owner.image)
             .into(holder.icon)
+        holder.icon.loadImageURL(item.owner.image)
+
         holder.nameRepository.text = item.nameRepository
         holder.description.text = item.description
-        holder.forks.text = item.forks_count.toString()
-        holder.stars.text = item.stars_count.toString()
+        holder.forks.text = item.forksCount.toString()
+        holder.stars.text = item.starsCount.toString()
         holder.username.text = item.owner.username
-        holder.fullname.text = item.fullname
+        holder.fullName.text = item.fullname
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderclass {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.item_repository, parent, false)
 
-        return ViewHolderclass(itemView)
+        return ViewHolderClass(itemView)
     }
 
     override fun getItemCount() = list.size
 
-
-    inner class ViewHolderclass(itemView: View) : RecyclerView.ViewHolder(itemView),
+    inner class ViewHolderClass(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         val icon: ImageView = itemView.findViewById(R.id.icone)
         val nameRepository: TextView = itemView.findViewById(R.id.nome_repositorio)
@@ -48,7 +50,7 @@ class RepositoryAdapter(
         val forks: TextView = itemView.findViewById(R.id.forks)
         val stars: TextView = itemView.findViewById(R.id.star)
         val username: TextView = itemView.findViewById(R.id.username)
-        val fullname: TextView = itemView.findViewById(R.id.fullname)
+        val fullName: TextView = itemView.findViewById(R.id.fullname)
 
         init {
             itemView.setOnClickListener(this)
@@ -67,4 +69,3 @@ class RepositoryAdapter(
         fun onItemClick(position: Int)
     }
 }
-

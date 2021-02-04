@@ -1,17 +1,40 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.3.72"
+    ext.kotlin_version = "1.4.20"
+    ext.detekt_version = "1.15.0"
     repositories {
         google()
         jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detekt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
+}
+
+detekt {
+    input = files("app/src/main/java")
+    config = files("config/detekt/detekt.yml")
+    autoCorrect = true
+    reports {
+        html {
+            enabled = true
+            destination = file("build/reports/detekt.html")
+        }
+    }
+}
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
 }
 
 allprojects {
@@ -23,23 +46,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    completeSdkVersion = 28
-    minSdkVersion = 15
-    targetSdkVersion = 28
-    supportSdkVersion = '1.1.0'
-    constraintLayoutVersion = '1.1.3'
-    materialVersion = '1.0.0'
-    archComponentsVersion = '2.2.0'
-    roomVersion = '2.2.0'
-    pagingVersion = '2.1.0-alpha01'
-    retrofiVersion = "2.6.0"
-    okhttpLoggingInterceptorVersion = "4.0.0"
-
-    runnerVersion = '1.3.0-alpha03'
-    rulesVersion = "1.0.1"
-    junitVersion = "4.12"
-    espressoVersion = "3.3.0-alpha03"
 }

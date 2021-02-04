@@ -1,33 +1,35 @@
 package com.example.desafiogabriela.pull.viewmodel
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.desafiogabriela.R
 import com.example.desafiogabriela.model.ItemPullrequest
-import com.example.desafiogabriela.api.InicializadorDeRetrofit
 import com.example.desafiogabriela.api.WebClient
-import com.example.desafiogabriela.pull.PullrequestActivity
+import com.example.desafiogabriela.utils.log.Logger
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PullrequestViewModel (private val getPull: WebClient) : ViewModel() {
+class PullrequestViewModel(
+    private val getPull: WebClient,
+    private val logger: Logger
+) : ViewModel() {
 
     private val pullLiveDataSuccess: MutableLiveData<List<ItemPullrequest>> = MutableLiveData()
-    val pullLiveData: LiveData<List<ItemPullrequest>> = pullLiveDataSuccess
-    private val pullLiveDataError = MutableLiveData<Any>()
+    val pullLiveDataNetworkSuccess: LiveData<List<ItemPullrequest>> = pullLiveDataSuccess
+    private val pullLiveDataError = MutableLiveData<Int>()
+    val pullLiveDataNetworkError: LiveData<Int> = pullLiveDataError
 
-    fun getPull(owner: String, repositorio: String) {
-        getPull.buscaPull(owner, repositorio).enqueue(object : Callback<List<ItemPullrequest>> {
+    fun getSearchPull(owner: String, repository: String) {
+        getPull.searchPull(owner, repository).enqueue(object : Callback<List<ItemPullrequest>> {
 
             override fun onFailure(
-                call: Call<List<ItemPullrequest>>, t: Throwable
+                call: Call<List<ItemPullrequest>>,
+                t: Throwable
             ) {
-                Log.d("Erro de chamada", t.message.toString())
-                Toast.makeText(PullrequestActivity(), t.message, Toast.LENGTH_LONG).show()
-                pullLiveDataError.postValue(t)
+                logger.logMessage("Error", t.message.toString())
+                pullLiveDataError.postValue(R.string.network_error)
             }
 
             override fun onResponse(
@@ -38,9 +40,10 @@ class PullrequestViewModel (private val getPull: WebClient) : ViewModel() {
                     response.body()?.let {
                         pullLiveDataSuccess.postValue(it)
                     }
+                } else {
+                   pullLiveDataError.postValue(R.string.error_message)
                 }
             }
-
         })
     }
 }

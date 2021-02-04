@@ -8,9 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.desafiogabriela.model.ItemPullrequest
 import com.example.desafiogabriela.R
-
 import com.squareup.picasso.Picasso
-
 
 class PullrequestAdapter(
     var list: List<ItemPullrequest>,
@@ -22,13 +20,11 @@ class PullrequestAdapter(
         return ViewHolderClass(
             LayoutInflater.from(parent.context).inflate(R.layout.item_pullrequest, parent, false)
         )
-
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
-
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
 
@@ -40,13 +36,11 @@ class PullrequestAdapter(
         holder.title.text = item.name
         holder.description.text = item.description
         holder.username.text = item.owner.username
-        holder.createdat.text = item.createdAt
+        holder.createdAt.text = item.createdAt
         holder.itemView.setOnClickListener {
-            repositoryListener.setOnClickListener ( item )
+            repositoryListener.setOnClickListener(item)
         }
-
     }
-
 
     inner class ViewHolderClass(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -54,13 +48,10 @@ class PullrequestAdapter(
         val title: TextView = itemView.findViewById(R.id.titulo_pullrequest)
         val description: TextView = itemView.findViewById(R.id.boby_pullrequest)
         val username: TextView = itemView.findViewById(R.id.username_pullrequest)
-        val createdat: TextView = itemView.findViewById(R.id.fullname_pullrequest)
-
+        val createdAt: TextView = itemView.findViewById(R.id.fullname_pullrequest)
     }
 
     interface ClickListener {
         fun setOnClickListener(itemClick: ItemPullrequest)
-
     }
-
 }

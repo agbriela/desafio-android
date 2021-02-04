@@ -10,4 +10,6 @@
     <string name="nome_sobrenome_pull">Nome Sobrenome</string>
     <string name="title_home">Gihub JavaPop</string>
     <string name="content_description_no">no</string>
+    <string name="network_error">Erro desconhecido</string>
+    <string name="error_message">Erro no servidor</string>
 </resources>
